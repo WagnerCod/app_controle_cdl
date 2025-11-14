@@ -1,0 +1,583 @@
+ 
+
+ 
+
+ 
+
+
+ 
+
+ 
+
+Versão: 0.1 (rascunho) 
+Projeto: 1339962 - Melhorias para os processos envolvendo as atividades do CDL 
+Data: 10/11/2025 
+Responsável: Apioarpio Oliveira 
+
+ 
+
+ 
+
+ 
+
+1. Visão Geral 
+
+O presente documento tem como objetivo descrever os requisitos para o desenvolvimento de um aplicativo móvel para geração e conferência de cargas no CDL (Centro de Distribuição e Logística) e Filiais, dando mobilidade ao processo hoje realizado no Protheus. O app operará como camada de aplicação em campo, movimentando registros diretamente no Protheus (fonte de verdade) e abstraindo apenas a parcela operacional necessária. 
+
+Contexto e motivação: A iniciativa busca celeridade operacional, melhoria de UX e redução de esforço no CDL. Hoje, o processo está sistematizado no Protheus porém dependente de terminais fixos; o app permitirá execução em campo, com offline-first e sincronização posterior. 
+
+Objetivos (SMART):  
+
+O1 — Prover mobilidade e agilidade às operações de geração e conferência de cargas no CDL. 
+
+O2 — Reduzir o uso de planilhas e papéis, concentrando as operações no aplicativo.   
+
+O3 — Diminuir o tempo médio de conferência por romaneio. 
+
+O4 — Melhorar a experiência do usuário (navegação e responsividade em ambiente operacional). 
+
+KPIs/Resultados esperados: 
+
+ K1 — Tempo médio de conferência (baseline nas 2 primeiras semanas; depois redução progressiva). 
+
+K2 — % de cargas finalizadas via app vs. total. 
+
+K3 — Eliminação de registros manuais (planilhas/anotações) por operação.  
+
+K4 — Feedback de satisfação do usuário interno (NPS/CSAT). 
+
+ 
+
+2. Escopo 
+
+Incluído (In-scope):  
+
+Login integrado ao AD (OIDC) e Seleção de Contexto (Empresa, Filial, Aglomerado). 
+
+Tela de Resumo com cargas abertas e conferências pendentes. 
+
+Módulo de Criação de Carga:  
+
+Tela de Criação 
+
+ Listagem de cargas 
+
+Consulta. 
+
+Módulo de Conferência:  
+
+Tela de Conferência (bipagem, totalizador de faltantes) 
+
+Consulta de Conferências. 
+
+Tela de Ajustes/Parâmetros do app. 
+
+Excluído (Out-of-scope): 
+
+Liberação de Viagem (permanece no Protheus). 
+
+Emissão de Documentos Fiscais, faturamento e TMS nesta fase. 
+
+Marcos/Entregas: 
+
+M1 — Login + Contexto (Empresa, Filial, Aglomerado) — estrutura básica do app. 
+
+M2 — Módulo de Conferência completo (inclui consulta). 
+
+M3 — Módulo de Criação de Carga (criar, listar, consultar). 
+
+3. Stakeholders e Personas 
+
+Stakeholders (Donos do Processo e TI):  
+
+Suprimentos (Donos do Processo): Yasmin Cruz, Anderson Souza, Bernard Duarte.T.I: Sherman Vendramini (Gestor). 
+
+Personas (usuários do app): 
+
+Almoxarifes — usuários das filiais; executam criação de cargas, conferência e consultas. 
+
+Operadores do CDL — responsáveis por receber e despachar mercadorias; executam conferência e acompanhamento de cargas. 
+
+Mapa RACI (macro): -  
+
+R (Responsável):  
+
+Yasmin (requisitos) 
+
+Equipe de TI (desenvolvimento) 
+
+ A (Aprovador):  
+
+Sherman (tecnologia),  
+
+Yasmin (CDL) 
+
+Bernard(CDL) 
+
+Anderson(CDL) 
+
+C (Consultado):  
+
+Anderson (suprimentos) 
+
+ I (Informado):  
+
+Operadores/Almoxarifes 
+
+ 
+
+4. Requisitos Funcionais 
+
+Formato: Histórias de Usuário + Critérios de Aceite. 
+
+ 
+
+RF-001 — Visualizar volumes pendentes por destino e monitorar montagem da carga 
+ 
+
+Como Operador do CDL, quero visualizar todos os volumes pendentes para despacho de um destino específico para iniciar e acompanhar a montagem de uma carga. 
+ 
+
+Critérios de aceite:  
+
+Dado que estou autenticado e selecionei empresa/filial, quando eu filtrar por destino então devo ver a listagem de volumes pendentes associados ao destino. 
+
+Dado que iniciei a montagem de uma carga, quando eu adicionar volumes então devo visualizar em tempo real os volumes já adicionados e os a adicionar.  
+
+E a listagem deve exibir o número de NFs presentes na carga e quais são (NF, série, chave, emitente), vinculadas aos respectivos volumes. 
+
+RF-002 — Adicionar volumes à carga por leitura de código de barras 
+ 
+
+Como Operador do CDL, quero adicionar volumes à carga lendo o código de barras da etiqueta do volume para agilizar a montagem com segurança. 
+
+ 
+Critérios de aceite:  
+
+Dado um volume válido e pendente, quando eu bipar seu código de barras então o volume deve ser associado à carga corrente.  
+
+Dado um volume já associado à carga, quando eu bipar novamente então o sistema deve ignorar a duplicidade (idempotência) e alertar o usuário. 
+
+Dado um código inválido ou não pertencente ao destino/filial, quando bipado então deve haver mensagem de erro e o volume não pode ser associado. 
+
+ 
+
+ 
+
+RF-003 — Listar e consultar cargas 
+Como Operador do CDL, quero acessar uma listagem de cargas e consultar detalhes para acompanhar status e composição. 
+
+ 
+Critérios de aceite:  
+
+Listagem com filtros (status, destino, período) e paginação. 
+
+Consulta detalhada com: identificador da carga, destino, volumes e NFs vinculadas, horários (criação, última atualização), usuário responsável. 
+
+ 
+
+RF-004 — Visualizar romaneios (cargas) pendentes de chegada por unidade 
+Como Conferente, quero visualizar todas as cargas pendentes de chegada para a minha unidade para planejar a conferência. 
+
+ 
+Critérios de aceite:  
+
+Dado a unidade selecionada no contexto, quando acessar “Conferências Pendentes” então devo ver as cargas aguardadas com previsão/rota quando disponível. 
+
+ 
+
+RF-005 — Realizar conferência por bipagem com visão do que falta 
+
+ 
+Como Conferente, quero bipar os volumes da carga e visualizar o totalizador do que falta para garantir conferência completa. 
+
+ 
+Critérios de aceite:  
+
+Dado uma carga em conferência, quando eu bipar um volume válido então o volume passa a conferido e o total faltante é atualizado em tempo real.  
+
+Dado um volume não pertencente à carga, quando bipado então o sistema deve bloquear a conferência e exibir alerta.  
+
+Deve existir tela/área de auxílio para pesquisar por NF e localizar o volume correspondente. 
+
+ 
+
+RF-006 — Finalizar conferência com apontamento de inconsistências 
+Como Conferente, quero finalizar a conferência e apontar inconsistências (ex.: volume faltante) com observação para registrar divergências de forma auditável. 
+
+ 
+Critérios de aceite:  
+
+Dado volumes faltantes, quando finalizar então devo poder marcar volumes faltantes e informar observação obrigatória. - E a carga deve mudar para status “Conferida com divergência” quando houver faltantes; caso contrário, “Conferida”. 
+
+ 
+
+RF-007 — Regularizar volume que chegou posteriormente 
+Como Conferente, quero informar posteriormente que um volume chegou após ter sido marcado como faltante para regularizar a conferência. 
+
+ 
+Critérios de aceite:  
+
+Dado um volume marcado como faltante, quando bipado posteriormente ou localizado via pesquisa então devo poder regularizar o status para conferido mantendo o histórico da divergência.  
+
+Registro de quem/quando realizou a regularização, mantendo trilha de auditoria. 
+
+ 
+
+RF-008 — Painel Resumo Operacional 
+Como Operador/Conferente, quero visualizar um resumo de cargas abertas e conferências pendentes para priorizar o trabalho. 
+
+ 
+Critérios de aceite:  
+
+Cards com contadores e acesso rápido às listas correspondentes.  
+
+Atualização periódica/ação de refresh. 
+
+ 
+
+RF-009 — Autenticação e Contexto 
+Como usuário, quero realizar login via AD e selecionar Empresa/Filial para operar no contexto correto 
+
+ 
+Critérios de aceite:  
+
+Suporte a AD/OIDC; bloqueio de acesso sem contexto selecionado; possibilidade de trocar contexto sem novo login. 
+
+RF-010 — Ajustes/Parâmetros do App 
+Como usuário avançado/Admin, quero configurar parâmetros operacionais do app para adaptar o comportamento ao ambiente. 
+
+ 
+Critérios de aceite:  
+
+Parâmetros seguros (com perfis), exemplo: timeout de leitura, ativar/desativar vibração/sonoro na bipagem. 
+
+ 
+
+4.1 Fluxos por Tela (textual) 
+
+Criação de Carga — Happy Path 
+1) Abre app → 2) Seleciona Empresa, Filial e Aglomerado → 3) Acessa Criar Carga → 4) Seleciona Destino → 5) Lê códigos de barras dos volumes → 6a) Fecha sem finalizar (status: Fechada), ou 6b) Finaliza (status: Finalizada). 
+Exceções: 
+- Reabrir carga (se fechada): retorna a “Em montagem”. 
+- Remover itens: permitido somente antes da finalização. 
+- Bloqueios: remover itens ou reabrir com status Finalizado é proibido. 
+
+Conferência — Happy Path 
+1) Abre app → 2) Seleciona Empresa, Filial e Aglomerado → 3) Acessa Conferência de Carga → 4) Seleciona carga da lista (da filial) ou pesquisa → 5) Abre Tela de Conferência → 6) Lê volumes (atualiza conferidos/faltantes) → 7) Finaliza. 
+Exceção: 
+- Faltante: finalizar com justificativa obrigatória (status: Conferida com divergência). 
+
+ 
+
+5. Requisitos Não Funcionais (RNF) 
+
+RNF-Desempenho: - P95 de resposta < 300 ms na API crítica; 
+- Capacidade de processar ≥  leituras/min. 
+
+RNF-Disponibilidade: - SLO 99,5% mensal. 
+
+RNF-Offline-First & Sincronização: - O app deve salvar dados localmente (cache transacional) e sincronizar com o Protheus quando houver conectividade. - Operações críticas (iniciar carga, conferir volume, finalizar) devem ter fila de envio com retries exponenciais, idempotência e resiliência a quedas (retomar do ponto). - Indicadores visuais de estado de sincronização (pendente, sincronizado, erro) e modo offline. 
+
+ 
+
+6. Integrações 
+
+Sistemas/Serviços: - Protheus (sistema fonte de verdade) — camadas de BFF/API para abstração. 
+
+Tabelas Protheus (movimentação): - SZI — Viagem 
+- SZH — Romaneio 
+- SZL — Etiquetas do Romaneio 
+- SZG — Cadastro de Rotas 
+- SZJ — Etiquetas 
+- SZM — Conferência 
+- SZK — Histórico 
+
+Pontos de Integração (API/Eventos): - PI-001 — Busca de dados ao entrar na carga (Protheus → App). 
+- PI-002 — Iniciar carga (App → Protheus): cria base de romaneio. 
+- PI-003 — Conferência (offline-first): leituras salvas localmente; em conectividade, sincroniza com Protheus. 
+- PI-004 — Finalização (App → Protheus): atualiza status e persiste em SZM/SZK. 
+- PI-005 — Buscar/Listar cargas (App ↔ Protheus). 
+- PI-006 — Envio de dados de conferência (App → Protheus) com idempotency-key. 
+
+Contratos de API (proposta – REST) > Base URL: /api/v1 
+> Autenticação: JWT (OIDC) 
+> Cabeçalhos comuns: Authorization: Bearer <token>, X-Idempotency-Key: <uuid> (em POST/PUT sensíveis) 
+
+Romaneios 
+
+POST /romaneios  
+
+Body: { empresa, filial, aglomerado, destinoId, idViagem } 
+
+201 { idRomaneio, status:"EM_MONTAGEM" }  
+
+409 (já existe romaneio aberto para destino/viagem) 
+
+POST /romaneios/{id}/fechar  
+
+200 { idRomaneio, status:"FECHADA" } 
+
+POST /romaneios/{id}/reabrir  
+
+200 { idRomaneio, status:"EM_MONTAGEM" }  
+
+403 (viagem vigente ou romaneio finalizado)  
+
+POST /romaneios/{id}/finalizar  
+
+200 { idRomaneio, status:"FINALIZADA" }  
+
+409 (pendências de integridade)  
+
+GET /romaneios 
+
+Query: status, destinoId, periodoInicio, periodoFim, pagina, tamanho  
+
+200 [{ idRomaneio, destinoId, status, qtVolumes, qtConferidos, dtCriacao }] 
+
+Volumes em Romaneio  
+
+POST /romaneios/{id}/volumes 
+
+Body: { codigoBarras, nfChave }  
+
+201 { idVolume, status:"EM_CARGA" }  
+
+409 (E-DUP-BARCODE) já associado;  
+
+422 validação (filial/destino) 
+
+DELETE /romaneios/{id}/volumes/{idVolume}  
+
+200 { removed:true }  
+
+403 (romaneio fechado/finalizado)  
+
+GET /romaneios/{id}  
+
+200 { idRomaneio, destinoId, status, volumes:[{ idVolume, nfChave, numeroVolume, status }], nfs:[{ nfChave, numero, serie }] } 
+
+ 
+
+ 
+
+ 
+
+Conferência 
+
+POST /conferencias  
+
+Body: { idRomaneio, leituras:[{ codigoBarras, timestamp }], modo:"ONLINE|OFFLINE" }  
+
+202 { recebidas:n, ignoradasPorDuplicidade:m } (processamento assíncrono)  
+
+POST /conferencias/{idRomaneio}/finalizar  
+
+Body: { justificativa?: string }  
+
+200 { status:"CONFERIDA" | "CONFERIDA_DIVERGENTE", faltantes:[...]}  
+
+400 (justificativa obrigatória quando há faltantes)  
+
+POST /conferencias/{idRomaneio}/regularizacoes  
+
+Body: { idVolume | codigoBarras }  
+
+200 { idVolume, status:"CONFERIDO" }  
+
+403 (sem permissão — filial destino/Admin) 
+
+Pesquisa/Consulta  
+
+GET /volumes  
+
+Query: nfChave, destinoId, status, romaneioId  
+
+GET /nfs/{nfChave} 
+
+ 200 { nfChave, fornecedorId, itensResumo, volumes:[{ idVolume, status }] } 
+
+Erros Padrão 
+
+{ 
+  "errorCode": "E-DUP-BARCODE", 
+  "message": "Volume já conferido ou associado", 
+  "details": {"idVolume":"..."} 
+} 
+
+ 
+
+7. Dados & Modelo de Informação 
+
+7.1 Entidades (campos mínimos) 
+
+Viagem 
+- idViagem (pk) 
+- descricao 
+- vigente (bool) 
+- empresa, filial 
+- rotaId (fk → Rota) 
+- status (Planejada | Em andamento | Encerrada) 
+- dtCriacao, dtAtualizacao 
+
+Romaneio (Carga) 
+- idRomaneio (pk) 
+- idViagem (fk) 
+- destinoId (fk → Rota/Destino) 
+- empresa, filial, aglomerado 
+- status (Em montagem | Fechada | Finalizada | Conferida | Conferida com divergência) 
+- qtVolumes (total), qtConferidos, qtFaltantes 
+- usuarioCriacao, usuarioUltimaAcao 
+- dtCriacao, dtFechamento, dtFinalizacao 
+
+Volume 
+- idVolume (pk: etiqueta única) 
+- idRomaneio (fk, opcional enquanto pendente) 
+- nfChave (fk → NF) 
+- numeroVolume (ex.: 001) 
+- empresa, filial, destinoId 
+- status (Pendente | Em carga | Conferido | Faltante | Regularizado) 
+- dtLeitura, usuarioLeitura 
+- hashEtiq (checksum para idempotência) 
+
+NF (Nota Fiscal) 
+- nfChave (pk) 
+- numero, serie, fornecedorId 
+- itensResumo (qtd/descrição) 
+- empresa, filial 
+- destinoId 
+- dtEmissao 
+- Relacionamento 1:N com Volume 
+
+Rota/Destino 
+- destinoId (pk) 
+- descricao 
+- origem, ufOrigem, municipioOrigem 
+- destino, ufDestino, municipioDestino 
+- ativo (bool) 
+
+ 
+
+7.2 Relacionamentos principais 
+
+Viagem 1:N Romaneio 
+ 
+
+Romaneio 1:N Volume 
+ 
+
+NF 1:N Volume 
+ 
+
+Rota/Destino 1:N Romaneio e 1:N Volume/NF 
+
+7.3 Mapeamento com Protheus (referência) 
+
+SZI (Viagem) ⇄ Viagem 
+
+SZH (Romaneio) ⇄ Romaneio 
+
+SZL (Etiquetas do Romaneio) ⇄ Volume (quando associado à carga) 
+
+SZG (Rotas) ⇄ Rota/Destino 
+
+SZJ (Etiquetas) ⇄ Volume (cadastro/entrada) 
+
+SZM (Conferência) ⇄ eventos de conferência/regularização 
+
+SZK (Histórico) ⇄ trilha de auditoria 
+
+7.4 Exemplos (dados fictícios para validação de fluxo) 
+
+Romaneios: 
+
+1001 — Rota PR Rubi → Algodoeira Sapezal (destinoId: Sapezal) 
+ 
+
+1002 — Rota PR Rubi → Carajás (destinoId: Carajas) 
+ 
+
+Viagem: 
+
+1001 — atrelada ao Romaneio 1001 (vigência conforme SZI) 
+
+NF & Volumes: 
+
+NF 2010 — Fornecedor 100 
+Volumes: 001, 002, 003 — Destino X — Status: Conferido 
+ 
+
+NF 1201 — Fornecedor 2910 
+Volumes: 001, 002, 003 — Destino Y — Status: Aguardando 
+
+ 
+
+8. Regras de Negócio 
+
+RN-001 — Um volume pertence a uma única carga ativa por vez; transferência exige ação explícita e auditoria. 
+
+RN-002 — Bipagens duplicadas devem ser idempotentes: não alteram contadores e geram alerta não-bloqueante. 
+
+RN-003 — Etiquetas de volume são geradas na entrada na unidade, contendo: NF (chave, série), itens (resumo), número total de etiquetas, destino e identificador único (código de barras). 
+
+RN-004 — Apenas volumes localizados na empresa/filial do contexto podem ser agregados a uma carga. 
+
+RN-005 — Conferência requer associação do volume à carga correta; volumes de outra carga não podem ser conferidos. 
+
+RN-006 — Finalização de conferência com faltantes exige observação obrigatória e muda status para “Conferida com divergência”. 
+
+RN-007 — Regularização tardia (volume que chega após finalização) mantém histórico: data/hora, usuário, motivo, status anterior e atual. 
+
+RN-008 — NFs são vinculadas aos volumes; listagens de carga devem apresentar quantidade de NFs e quais estão presentes. 
+
+RN-009 — Filtros por destino são mandatórios na visualização de pendências para montagem de carga. 
+
+RN-010 — Operações críticas (associar volume, finalizar carga, regularizar faltante) exigem trilha de auditoria (quem, quando, onde, o quê). 
+
+RN-011 — Remover volumes só é permitido em cargas Em montagem; é proibido para cargas Fechadas e Finalizadas. 
+
+RN-012 — Reabrir carga só é permitido para cargas Fechadas e somente se a viagem não estiver vigente (consulta de vigência no Protheus/SZI). Cargas Finalizadas não podem ser reabertas. 
+
+RN-013 — Justificativa é obrigatória para finalizar conferência com faltantes. 
+
+RN-014 — Aglomerado faz parte do contexto e impacta todas as consultas e movimentos. 
+
+RN-015 — Regularização de faltante só pode ser feita por usuários da filial destino ou por perfil Encarregado do CDL/Admin. 
+
+RN-016 — Todo Romaneio deve estar associado a uma Viagem vigente/não vigente (regra de controle de reabertura). 
+
+ 
+
+9. UX/UI 
+
+Páginas/Telas: conforme seções de fluxo (Criação de Carga, Conferência, Consulta, Resumo, Ajustes). 
+
+9.1 Mensagens & Erros-chave (UX operacional) 
+
+Duplicidade na bipagem: 
+> “Volume já conferido ou já associado à carga.” (código: E-DUP-BARCODE) — tratamento idempotente, sem somar contadores. 
+
+Volume de outra carga/filial: 
+> “Volume não pertence à carga/filial atual.” (código: E-VOL-CONTEXTO) — bloqueio da ação. 
+
+Finalização com faltantes: 
+Prompt exige texto: “Informe a justificativa para volumes faltantes” (mín. 10 caracteres). (código: E-JUST-OBR) 
+
+Falha de sincronização: 
+> “Não foi possível sincronizar com o Protheus.” 
+Mostrar motivo do erro (ex.: timeout, 401, regra negada) e manter item em fila de reenvio. (código: E-SYNC) 
+
+Sem conectividade (modo offline): 
+Banner: “Operando offline — alterações serão enviadas quando a conexão retornar.” 
+
+Forma 
+
+10. Perfis, Permissões e Auditoria 
+
+Perfis: - Operador — cria/edita cargas em montagem, fecha carga, reabre (se permitido pela vigência), remove volumes antes da finalização, finaliza carga. - Conferente — realiza conferência, finaliza conferência (com/sem divergência), regulariza faltante na filial destino. - Admin (TI/Encarregado CDL) — todos os poderes acima, além de configurar parâmetros, consultar auditoria e regularizar faltante em qualquer filial (conforme política). 
+
+Regras de autorização complementares: - Fechar/Reabrir/Finalizar: permitido a todos os perfis conforme RN-012 (reabrir só se Viagem não vigente). - Remover volume (pré-finalização): permitido a qualquer perfil. - Regularizar faltante: apenas filial destino ou Admin/Encarregado CDL (RN-015). 
+
+Auditoria obrigatória: - Ações: associar/remover volume, fechar/reabrir/finalizar romaneio, finalizar conferência com divergência, regularização de faltante. 
+- Registrar: usuário, data/hora, contexto (empresa/filial/aglomerado), origem (online/offline), payload mínimo. 
