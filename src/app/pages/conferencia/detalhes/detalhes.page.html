@@ -1,0 +1,49 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/conferencia/pendentes"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Conferência #{{ romaneioId }}</ion-title>
+  </ion-toolbar>
+  <app-network-status></app-network-status>
+</ion-header>
+
+<ion-content>
+  <div class="content-container">
+    <div class="totalizador-conferencia">
+      <h1>{{ conferidos }} / {{ volumes.length }}</h1>
+      <p>Conferidos / Total</p>
+      <p *ngIf="faltantes > 0" style="margin-top: 8px; font-weight: bold;">
+        ⚠️ {{ faltantes }} {{ faltantes === 1 ? 'faltante' : 'faltantes' }}
+      </p>
+    </div>
+
+    <ion-button expand="block" color="success" class="btn-bipar" (click)="biparVolume()">
+      <ion-icon name="barcode" slot="start"></ion-icon>
+      Bipar Volume
+    </ion-button>
+
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Volumes</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list>
+          <ion-item *ngFor="let volume of volumes" [class.volume-item]="true" [class.conferido]="volume.status === 'CONFERIDO'" [class.faltante]="volume.status !== 'CONFERIDO'">
+            <ion-icon [name]="volume.status === 'CONFERIDO' ? 'checkmark-circle' : 'alert-circle'" slot="start" [color]="volume.status === 'CONFERIDO' ? 'success' : 'danger'"></ion-icon>
+            <ion-label>
+              <h2>{{ volume.codigo_barras }}</h2>
+              <p>NF: {{ volume.nf_chave }}</p>
+            </ion-label>
+            <ion-badge slot="end" [color]="volume.status === 'CONFERIDO' ? 'success' : 'warning'">{{ volume.status }}</ion-badge>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-button expand="block" color="primary" (click)="finalizarConferencia()">
+      <ion-icon name="checkmark-done" slot="start"></ion-icon>
+      Finalizar Conferência
+    </ion-button>
+  </div>
+</ion-content>

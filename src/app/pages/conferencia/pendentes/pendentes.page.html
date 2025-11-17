@@ -1,0 +1,39 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Conferências Pendentes</ion-title>
+  </ion-toolbar>
+  <app-network-status></app-network-status>
+</ion-header>
+
+<ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="loadPendentes($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <div class="content-container">
+    <ion-card *ngFor="let romaneio of romaneiosPendentes" button (click)="goToDetalhes(romaneio.id_romaneio)">
+      <ion-card-header>
+        <ion-card-subtitle>Romaneio #{{ romaneio.id_romaneio }}</ion-card-subtitle>
+        <ion-card-title>{{ romaneio.destino_id }}</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <p><strong>Volumes:</strong> {{ romaneio.qt_volumes }}</p>
+        <p><strong>Status:</strong> {{ romaneio.status }}</p>
+        <ion-button expand="block" color="primary">
+          <ion-icon name="checkmark-done" slot="start"></ion-icon>
+          Conferir Agora
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card *ngIf="romaneiosPendentes.length === 0">
+      <ion-card-content class="empty-state">
+        <ion-icon name="clipboard-outline" color="medium"></ion-icon>
+        <p>Nenhuma conferência pendente</p>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>

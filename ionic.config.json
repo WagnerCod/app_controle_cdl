@@ -1,0 +1,8 @@
+{
+  "name": "app-controle-cdl",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "angular",
+  "id": "app-controle-cdl"
+}

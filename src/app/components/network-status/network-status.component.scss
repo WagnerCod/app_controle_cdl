@@ -1,0 +1,20 @@
+.network-status {
+  display: flex;
+  justify-content: flex-end;
+  padding: 4px 8px;
+
+  .status-chip {
+    font-size: 14px;
+    font-weight: 600;
+    height: 32px;
+
+    ion-icon {
+      font-size: 18px;
+      margin-right: 4px;
+    }
+
+    ion-label {
+      font-size: 13px;
+    }
+  }
+}

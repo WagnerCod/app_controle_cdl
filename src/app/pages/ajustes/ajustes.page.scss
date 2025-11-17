@@ -1,0 +1,18 @@
+.content-container {
+  padding: 16px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+ion-note {
+  display: flex;
+  align-items: center;
+  margin-top: 12px;
+  font-size: 13px;
+  color: var(--ion-color-danger);
+
+  ion-icon {
+    margin-right: 4px;
+    font-size: 16px;
+  }
+}

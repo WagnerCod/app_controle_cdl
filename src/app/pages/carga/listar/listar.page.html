@@ -1,0 +1,46 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Listar Cargas</ion-title>
+  </ion-toolbar>
+  <app-network-status></app-network-status>
+</ion-header>
+
+<ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="loadRomaneios($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <div class="content-container">
+    <ion-item>
+      <ion-label>Filtrar por Status</ion-label>
+      <ion-select [(ngModel)]="filtroStatus" (ionChange)="loadRomaneios()">
+        <ion-select-option value="">Todos</ion-select-option>
+        <ion-select-option value="EM_MONTAGEM">Em Montagem</ion-select-option>
+        <ion-select-option value="FECHADA">Fechada</ion-select-option>
+        <ion-select-option value="FINALIZADA">Finalizada</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-card *ngFor="let romaneio of romaneios">
+      <ion-card-header>
+        <ion-card-subtitle>Romaneio #{{ romaneio.id_romaneio }}</ion-card-subtitle>
+        <ion-card-title>{{ romaneio.destino_id }}</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <p><strong>Status:</strong> <ion-badge [color]="getStatusColor(romaneio.status)">{{ romaneio.status }}</ion-badge></p>
+        <p><strong>Volumes:</strong> {{ romaneio.qt_volumes }}</p>
+        <p><strong>Criado em:</strong> {{ romaneio.dt_criacao | date:'dd/MM/yyyy HH:mm' }}</p>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card *ngIf="romaneios.length === 0">
+      <ion-card-content class="empty-state">
+        <ion-icon name="cube-outline" color="medium"></ion-icon>
+        <p>Nenhuma carga encontrada</p>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>
