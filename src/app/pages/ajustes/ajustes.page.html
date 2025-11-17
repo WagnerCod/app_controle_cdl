@@ -1,0 +1,76 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Ajustes</ion-title>
+  </ion-toolbar>
+  <app-network-status></app-network-status>
+</ion-header>
+
+<ion-content>
+  <div class="content-container">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Parâmetros de Bipagem</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list>
+          <ion-item>
+            <ion-label>Ativar Vibração na Bipagem</ion-label>
+            <ion-toggle [(ngModel)]="vibrateOnScan" (ionChange)="onVibrateChange()"></ion-toggle>
+          </ion-item>
+
+          <ion-item>
+            <ion-label>Ativar Som na Bipagem</ion-label>
+            <ion-toggle [(ngModel)]="soundOnScan" (ionChange)="onSoundChange()"></ion-toggle>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Sincronização</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-button expand="block" color="primary" (click)="forceSyncNow()">
+          <ion-icon name="cloud-upload" slot="start"></ion-icon>
+          Forçar Sincronização Agora
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Dados Locais</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-button expand="block" color="danger" (click)="clearCache()">
+          <ion-icon name="trash" slot="start"></ion-icon>
+          Limpar Cache Local
+        </ion-button>
+        <ion-note>
+          <ion-icon name="warning"></ion-icon>
+          Esta ação removerá todos os dados locais não sincronizados
+        </ion-note>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Informações do App</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list>
+          <ion-item>
+            <ion-label>
+              <h3>Versão do App</h3>
+              <p>{{ appVersion }}</p>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>

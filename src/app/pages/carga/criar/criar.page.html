@@ -1,0 +1,87 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Criar Carga</ion-title>
+  </ion-toolbar>
+  <app-network-status></app-network-status>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="content-container">
+    <!-- Seleção de Destino -->
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Selecionar Destino</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-item>
+          <ion-label position="stacked">Destino *</ion-label>
+          <ion-select 
+            [(ngModel)]="selectedDestino" 
+            placeholder="Selecione o destino"
+            (ionChange)="onDestinoChange()"
+            [disabled]="romaneioId !== null">
+            <ion-select-option *ngFor="let destino of destinos" [value]="destino.id">
+              {{ destino.nome }}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Botão Bipar Volume -->
+    <ion-button 
+      expand="block" 
+      color="success" 
+      class="btn-bipar"
+      (click)="biparVolume()"
+      [disabled]="!romaneioId">
+      <ion-icon name="barcode" slot="start"></ion-icon>
+      Bipar Volume
+    </ion-button>
+
+    <!-- Totalizador -->
+    <ion-card class="totalizador-card">
+      <ion-card-content>
+        <div class="totalizador">
+          <h2>{{ totalVolumes }}</h2>
+          <p>{{ totalVolumes === 1 ? 'volume adicionado' : 'volumes adicionados' }}</p>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Lista de Volumes -->
+    <ion-card *ngIf="volumes.length > 0">
+      <ion-card-header>
+        <ion-card-title>Volumes Adicionados</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list>
+          <ion-item *ngFor="let volume of volumes" class="volume-item">
+            <ion-icon name="cube" slot="start" color="primary"></ion-icon>
+            <ion-label>
+              <h2>{{ volume.codigo_barras }}</h2>
+              <p>NF: {{ volume.nf_chave }}</p>
+            </ion-label>
+            <ion-badge slot="end" color="success">{{ volume.status }}</ion-badge>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Botões de Ação -->
+    <div class="action-buttons" *ngIf="romaneioId">
+      <ion-button expand="block" color="secondary" (click)="fecharCarga()">
+        <ion-icon name="lock-closed" slot="start"></ion-icon>
+        Fechar Carga
+      </ion-button>
+
+      <ion-button expand="block" color="primary" (click)="finalizarCarga()">
+        <ion-icon name="checkmark-done" slot="start"></ion-icon>
+        Finalizar Carga
+      </ion-button>
+    </div>
+  </div>
+</ion-content>

@@ -1,0 +1,103 @@
+<ion-content class="ion-padding">
+  <div class="login-container">
+    <!-- Logo/Título -->
+    <div class="header">
+      <ion-icon name="cube" color="primary"></ion-icon>
+      <h1>App Controle CDL</h1>
+      <p>Geração e Conferência de Cargas</p>
+    </div>
+
+    <!-- Formulário de Login -->
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Login</ion-card-title>
+      </ion-card-header>
+
+      <ion-card-content>
+        <!-- Usuário -->
+        <ion-item>
+          <ion-label position="stacked">Usuário</ion-label>
+          <ion-input 
+            type="text" 
+            [(ngModel)]="username" 
+            placeholder="Digite seu usuário"
+            autocomplete="username">
+          </ion-input>
+        </ion-item>
+
+        <!-- Senha -->
+        <ion-item>
+          <ion-label position="stacked">Senha</ion-label>
+          <ion-input 
+            type="password" 
+            [(ngModel)]="password" 
+            placeholder="Digite sua senha"
+            autocomplete="current-password">
+          </ion-input>
+        </ion-item>
+
+        <!-- Divisor -->
+        <div class="divider">
+          <ion-text color="medium">
+            <h3>Selecione o Contexto</h3>
+          </ion-text>
+        </div>
+
+        <!-- Empresa -->
+        <ion-item>
+          <ion-label position="stacked">Empresa *</ion-label>
+          <ion-select 
+            [(ngModel)]="selectedEmpresa" 
+            placeholder="Selecione a empresa"
+            (ionChange)="onEmpresaChange()">
+            <ion-select-option *ngFor="let empresa of empresas" [value]="empresa.id">
+              {{ empresa.nome }}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+
+        <!-- Filial -->
+        <ion-item>
+          <ion-label position="stacked">Filial *</ion-label>
+          <ion-select 
+            [(ngModel)]="selectedFilial" 
+            placeholder="Selecione a filial"
+            [disabled]="!selectedEmpresa">
+            <ion-select-option *ngFor="let filial of filiais" [value]="filial.id">
+              {{ filial.nome }}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+
+        <!-- Aglomerado -->
+        <ion-item>
+          <ion-label position="stacked">Aglomerado *</ion-label>
+          <ion-select 
+            [(ngModel)]="selectedAglomerado" 
+            placeholder="Selecione o aglomerado">
+            <ion-select-option *ngFor="let aglomerado of aglomerados" [value]="aglomerado.id">
+              {{ aglomerado.nome }}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+
+        <!-- Botão Entrar -->
+        <ion-button 
+          expand="block" 
+          color="primary" 
+          (click)="login()"
+          [disabled]="!isFormValid()"
+          class="btn-login">
+          <ion-icon name="log-in" slot="start"></ion-icon>
+          Entrar
+        </ion-button>
+
+        <!-- Nota -->
+        <ion-note class="note">
+          <ion-icon name="information-circle"></ion-icon>
+          Todos os campos são obrigatórios
+        </ion-note>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>

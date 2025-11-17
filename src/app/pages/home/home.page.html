@@ -1,0 +1,141 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Início</ion-title>
+  </ion-toolbar>
+  <!-- Indicador de rede -->
+  <app-network-status></app-network-status>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Início</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <!-- Pull to refresh -->
+  <ion-refresher slot="fixed" (ionRefresh)="loadDashboardData($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <div class="content-container">
+    <!-- Contexto atual -->
+    <ion-card class="context-card">
+      <ion-card-content>
+        <ion-icon name="business" color="primary"></ion-icon>
+        <div class="context-info">
+          <h3>Contexto Atual</h3>
+          <p>{{ contextSummary }}</p>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Cards de resumo -->
+    <ion-grid>
+      <ion-row>
+        <!-- Cargas Abertas -->
+        <ion-col size="12" sizeMd="6" sizeLg="4">
+          <ion-card class="summary-card" button (click)="goToCriarCarga()">
+            <ion-card-header>
+              <ion-card-subtitle>Cargas Abertas</ion-card-subtitle>
+            </ion-card-header>
+            <ion-card-content>
+              <div class="card-large-number" [style.color]="'var(--ion-color-warning)'">
+                {{ cargasAbertas }}
+              </div>
+              <p class="card-description">
+                <ion-icon name="cube"></ion-icon>
+                Em montagem
+              </p>
+              <ion-button expand="block" fill="outline" color="warning">
+                <ion-icon name="add" slot="start"></ion-icon>
+                Criar Nova Carga
+              </ion-button>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+
+        <!-- Cargas Fechadas -->
+        <ion-col size="12" sizeMd="6" sizeLg="4">
+          <ion-card class="summary-card" button (click)="goToListarCargas()">
+            <ion-card-header>
+              <ion-card-subtitle>Cargas Fechadas</ion-card-subtitle>
+            </ion-card-header>
+            <ion-card-content>
+              <div class="card-large-number" [style.color]="'var(--ion-color-secondary)'">
+                {{ cargasFechadas }}
+              </div>
+              <p class="card-description">
+                <ion-icon name="lock-closed"></ion-icon>
+                Aguardando finalização
+              </p>
+              <ion-button expand="block" fill="outline" color="secondary">
+                <ion-icon name="list" slot="start"></ion-icon>
+                Ver Todas as Cargas
+              </ion-button>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+
+        <!-- Conferências Pendentes -->
+        <ion-col size="12" sizeMd="6" sizeLg="4">
+          <ion-card class="summary-card" button (click)="goToConferenciasPendentes()">
+            <ion-card-header>
+              <ion-card-subtitle>Conferências Pendentes</ion-card-subtitle>
+            </ion-card-header>
+            <ion-card-content>
+              <div class="card-large-number" [style.color]="'var(--ion-color-primary)'">
+                {{ conferenciasPendentes }}
+              </div>
+              <p class="card-description">
+                <ion-icon name="clipboard"></ion-icon>
+                Aguardando conferência
+              </p>
+              <ion-button expand="block" fill="outline" color="primary">
+                <ion-icon name="checkmark-done" slot="start"></ion-icon>
+                Conferir Cargas
+              </ion-button>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <!-- Ações rápidas -->
+    <ion-card class="actions-card">
+      <ion-card-header>
+        <ion-card-title>Ações Rápidas</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list>
+          <ion-item button routerLink="/carga/criar" detail="true">
+            <ion-icon name="add-circle" slot="start" color="warning"></ion-icon>
+            <ion-label>
+              <h2>Criar Nova Carga</h2>
+              <p>Iniciar montagem de uma nova carga</p>
+            </ion-label>
+          </ion-item>
+
+          <ion-item button routerLink="/conferencia/pendentes" detail="true">
+            <ion-icon name="clipboard" slot="start" color="primary"></ion-icon>
+            <ion-label>
+              <h2>Conferir Cargas</h2>
+              <p>Realizar conferência de volumes</p>
+            </ion-label>
+          </ion-item>
+
+          <ion-item button routerLink="/carga/listar" detail="true">
+            <ion-icon name="list" slot="start" color="secondary"></ion-icon>
+            <ion-label>
+              <h2>Consultar Cargas</h2>
+              <p>Ver todas as cargas criadas</p>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>
