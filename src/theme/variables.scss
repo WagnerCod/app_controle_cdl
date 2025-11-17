@@ -1,0 +1,122 @@
+/**
+ * Tema Operacional para App Controle CDL
+ * - Alto contraste
+ * - Fontes grandes
+ * - Botões grandes
+ * - Visual limpo e direto
+ */
+
+:root {
+  /** Cores primárias **/
+  --ion-color-primary: #007bff;
+  --ion-color-primary-rgb: 0, 123, 255;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-contrast-rgb: 255, 255, 255;
+  --ion-color-primary-shade: #006ce0;
+  --ion-color-primary-tint: #1a8aff;
+
+  /** Sucesso (Verde) **/
+  --ion-color-success: #28a745;
+  --ion-color-success-rgb: 40, 167, 69;
+  --ion-color-success-contrast: #ffffff;
+  --ion-color-success-contrast-rgb: 255, 255, 255;
+  --ion-color-success-shade: #23943d;
+  --ion-color-success-tint: #3eb158;
+
+  /** Aviso (Amarelo) **/
+  --ion-color-warning: #ffc107;
+  --ion-color-warning-rgb: 255, 193, 7;
+  --ion-color-warning-contrast: #000000;
+  --ion-color-warning-contrast-rgb: 0, 0, 0;
+  --ion-color-warning-shade: #e0a906;
+  --ion-color-warning-tint: #ffca22;
+
+  /** Perigo (Vermelho) **/
+  --ion-color-danger: #dc3545;
+  --ion-color-danger-rgb: 220, 53, 69;
+  --ion-color-danger-contrast: #ffffff;
+  --ion-color-danger-contrast-rgb: 255, 255, 255;
+  --ion-color-danger-shade: #c22e3c;
+  --ion-color-danger-tint: #e04858;
+
+  /** Cores secundárias **/
+  --ion-color-secondary: #6c757d;
+  --ion-color-secondary-rgb: 108, 117, 125;
+  --ion-color-secondary-contrast: #ffffff;
+  --ion-color-secondary-contrast-rgb: 255, 255, 255;
+  --ion-color-secondary-shade: #5f676e;
+  --ion-color-secondary-tint: #7b838a;
+
+  /** Cores de fundo **/
+  --ion-background-color: #f8f9fa;
+  --ion-background-color-rgb: 248, 249, 250;
+  
+  --ion-text-color: #212529;
+  --ion-text-color-rgb: 33, 37, 41;
+
+  /** Tamanhos de fonte **/
+  --ion-font-size-base: 18px;
+  --ion-font-size-large: 24px;
+  --ion-font-size-button: 20px;
+
+  /** Botões **/
+  --ion-button-height: 56px;
+}
+
+/** Modo Escuro (opcional para ambientes com pouca luz) **/
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ion-background-color: #1a1a1a;
+    --ion-background-color-rgb: 26, 26, 26;
+    
+    --ion-text-color: #ffffff;
+    --ion-text-color-rgb: 255, 255, 255;
+
+    --ion-color-step-50: #252525;
+    --ion-color-step-100: #2f2f2f;
+    --ion-color-step-150: #3a3a3a;
+    --ion-color-step-200: #444444;
+    --ion-color-step-250: #4e4e4e;
+    --ion-color-step-300: #595959;
+    --ion-color-step-350: #636363;
+    --ion-color-step-400: #6e6e6e;
+    --ion-color-step-450: #787878;
+    --ion-color-step-500: #828282;
+    --ion-color-step-550: #8d8d8d;
+    --ion-color-step-600: #979797;
+    --ion-color-step-650: #a2a2a2;
+    --ion-color-step-700: #acacac;
+    --ion-color-step-750: #b6b6b6;
+    --ion-color-step-800: #c1c1c1;
+    --ion-color-step-850: #cbcbcb;
+    --ion-color-step-900: #d6d6d6;
+    --ion-color-step-950: #e0e0e0;
+  }
+}
+
+/** Estilos customizados para operação **/
+ion-button {
+  --height: var(--ion-button-height);
+  font-size: var(--ion-font-size-button);
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+ion-title {
+  font-size: var(--ion-font-size-large);
+  font-weight: bold;
+}
+
+ion-label {
+  font-size: var(--ion-font-size-base);
+}
+
+ion-card {
+  border: 2px solid var(--ion-color-step-200);
+  box-shadow: none;
+}
+
+ion-card-title {
+  font-size: 22px;
+  font-weight: bold;
+}

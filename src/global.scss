@@ -1,0 +1,110 @@
+/*
+ * App Global CSS
+ * Estilos globais que se aplicam a todo o aplicativo
+ */
+
+/* Core CSS required for Ionic components to work properly */
+@import "@ionic/angular/css/core.css";
+
+/* Basic CSS for apps built with Ionic */
+@import "@ionic/angular/css/normalize.css";
+@import "@ionic/angular/css/structure.css";
+@import "@ionic/angular/css/typography.css";
+@import '@ionic/angular/css/display.css';
+
+/* Optional CSS utils that can be commented out */
+@import "@ionic/angular/css/padding.css";
+@import "@ionic/angular/css/float-elements.css";
+@import "@ionic/angular/css/text-alignment.css";
+@import "@ionic/angular/css/text-transformation.css";
+@import "@ionic/angular/css/flex-utils.css";
+
+/** Estilos customizados **/
+* {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+.card-large-number {
+  font-size: 48px;
+  font-weight: bold;
+  text-align: center;
+  margin: 16px 0;
+}
+
+.totalizador-conferencia {
+  background: var(--ion-color-primary);
+  color: white;
+  padding: 24px;
+  text-align: center;
+  border-radius: 8px;
+  margin: 16px;
+}
+
+.totalizador-conferencia h1 {
+  font-size: 42px;
+  margin: 8px 0;
+  font-weight: bold;
+}
+
+.totalizador-conferencia p {
+  font-size: 18px;
+  margin: 4px 0;
+}
+
+.btn-bipar {
+  --background: var(--ion-color-success);
+  --height: 64px;
+  font-size: 22px;
+  font-weight: bold;
+  margin: 16px;
+}
+
+.volume-item {
+  border-left: 4px solid var(--ion-color-primary);
+  margin: 8px 0;
+  padding: 12px;
+}
+
+.volume-item.conferido {
+  border-left-color: var(--ion-color-success);
+  background: rgba(40, 167, 69, 0.1);
+}
+
+.volume-item.faltante {
+  border-left-color: var(--ion-color-danger);
+  background: rgba(220, 53, 69, 0.1);
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 16px;
+  font-size: 14px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.status-badge.em-montagem {
+  background: var(--ion-color-warning);
+  color: var(--ion-color-warning-contrast);
+}
+
+.status-badge.fechada {
+  background: var(--ion-color-secondary);
+  color: var(--ion-color-secondary-contrast);
+}
+
+.status-badge.finalizada {
+  background: var(--ion-color-primary);
+  color: var(--ion-color-primary-contrast);
+}
+
+.status-badge.conferida {
+  background: var(--ion-color-success);
+  color: var(--ion-color-success-contrast);
+}
+
+.status-badge.conferida-divergente {
+  background: var(--ion-color-danger);
+  color: var(--ion-color-danger-contrast);
+}
