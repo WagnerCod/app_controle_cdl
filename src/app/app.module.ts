@@ -7,8 +7,8 @@ import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 
-// Componentes compartilhados
-import { NetworkStatusComponent } from './components/network-status/network-status.component';
+// Módulo de componentes compartilhados
+import { SharedComponentsModule } from './components/shared-components.module';
 
 /**
  * AppModule - Módulo principal da aplicação
@@ -17,13 +17,13 @@ import { NetworkStatusComponent } from './components/network-status/network-stat
 
 @NgModule({
   declarations: [
-    AppComponent,
-    NetworkStatusComponent
+    AppComponent
   ],
   imports: [
     BrowserModule,
     IonicModule.forRoot(),
-    AppRoutingModule
+    AppRoutingModule,
+    SharedComponentsModule
   ],
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }

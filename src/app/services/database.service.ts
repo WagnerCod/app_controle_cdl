@@ -342,7 +342,7 @@ export class DatabaseService {
     }
     
     sql += ` WHERE id_romaneio = ?`;
-    params.push(id);
+    params.push(String(id));
     
     await this.executeSql(sql, params);
   }
@@ -456,7 +456,7 @@ export class DatabaseService {
     }
     
     sql += ` WHERE id = ?`;
-    params.push(id);
+    params.push(String(id));
     
     await this.executeSql(sql, params);
   }

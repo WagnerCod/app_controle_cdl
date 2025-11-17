@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { RouterModule } from '@angular/router';
+import { SharedComponentsModule } from '../../components/shared-components.module';
 import { AjustesPage } from './ajustes.page';
 
 @NgModule({
@@ -10,6 +11,7 @@ import { AjustesPage } from './ajustes.page';
     CommonModule,
     FormsModule,
     IonicModule,
+    SharedComponentsModule,
     RouterModule.forChild([{ path: '', component: AjustesPage }])
   ],
   declarations: [AjustesPage]
